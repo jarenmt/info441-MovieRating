@@ -130,7 +130,8 @@ Any user will be able to view the page a person (director, producer, actor, etc)
 APPENDIX
 
 
-
+For ERD and Pictures: 
+https://docs.google.com/document/d/1izy4wkWV9OE95jnoSNXvE7fvJqGpKXupAmpwStWXP-c/edit#
 
 
 
