@@ -1,0 +1,1 @@
+sudo docker build -t ssunni12/ssunni12sql .
