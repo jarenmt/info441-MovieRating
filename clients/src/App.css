@@ -1,0 +1,77 @@
+.nav {
+  background-color: #dbd7d2;
+  overflow: hidden;
+  position: sticky;
+  color: black;
+}
+
+.nav a {
+float: left;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+font-size: 17px;
+}
+
+.nav a:hover {
+background-color: rgb(59, 59, 59);
+color: white;
+}
+
+.nav-right {
+float: right;
+}
+
+/* FOOTER */
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #dbd7d2;
+  color: black;
+  text-align: center;
+}
+
+/* CARDS */
+
+.column {
+  box-sizing: border-box;
+  float: left;
+  width: 20%;
+  padding: 0 10px;
+}
+
+.row {
+  margin: 2.5% 25px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+h1 {
+  text-align: center;
+}
+
+/* MOVIE PAGE */
+.moviePage p {
+  margin: 0 100px 0 100px;
+}

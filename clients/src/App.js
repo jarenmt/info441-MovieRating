@@ -1,101 +1,50 @@
 import React, { Component } from 'react';
-import Auth from './Components/Auth/Auth';
-import PageTypes from './Constants/PageTypes/PageTypes';
-import Main from './Components/Main/Main';
-import './Styles/App.css';
-import api from './Constants/APIEndpoints/APIEndpoints';
+import './App.css';
+import { Router, Switch, Route, Link, Redirect, NavLink, BrowserRouter } from 'react-router-dom';
+import Movies from './pages/Movies';
+import TV from './pages/TV';
 
 class App extends Component {
-    constructor() {
-        super();
-        this.state = {
-            page: localStorage.getItem("Authorization") ? PageTypes.signedInMain : PageTypes.signIn,
-            authToken: localStorage.getItem("Authorization") || null,
-            user: null
-        }
+  render() {
+    return (
+      <div>
+        <BrowserRouter>
+          <Nav />
+          <Switch>
+            <Route exact path="/" />
+            <Route path="/movies" component={Movies} />
+            <Route path="/tv" component={TV} />
+          </Switch>
+        </BrowserRouter>
+        <Footer />
+      </div>
+    );
+  }
+}
 
-        this.getCurrentUser()
-    }
+class Nav extends Component {
+  render() {
+    return (
+      <div class="nav">
+        <Link to="/">Moovie</ Link>
+        <Link to="/movies">Movies</ Link>
+        <Link to="/tv">TV Shows</ Link>
+        <div class="nav-right">
+          <Link to="/login">Login</ Link>
+        </div>
+      </div>
+    )
+  }
+}
 
-
-    /**
-     * @description Gets the users
-     */
-    getCurrentUser = async () => {
-        if (!this.state.authToken) {
-            return;
-        }
-        const response = await fetch(api.base + api.handlers.myuser, {
-            headers: new Headers({
-                "Authorization": this.state.authToken
-            })
-        });
-        if (response.status >= 300) {
-            alert("Unable to verify login. Logging out...");
-            localStorage.setItem("Authorization", "");
-            this.setAuthToken("");
-            this.setUser(null)
-            return;
-        }
-        const user = await response.json()
-        this.setUser(user);
-
-    }
-
-    /**
-     * @description sets the page type to sign in
-     */
-    setPageToSignIn = (e) => {
-        e.preventDefault();
-        this.setState({ page: PageTypes.signIn });
-    }
-
-    /**
-     * @description sets the page type to sign up
-     */
-    setPageToSignUp = (e) => {
-        e.preventDefault();
-        this.setState({ page: PageTypes.signUp });
-    }
-
-    setPage = (e, page) => {
-        e.preventDefault();
-        this.setState({ page });
-    }
-
-    /**
-     * @description sets auth token
-     */
-    setAuthToken = (authToken) => {
-        this.setState({ authToken, page: authToken === "" ? PageTypes.signIn : PageTypes.signedInMain });
-    }
-
-    /**
-     * @description sets the user
-     */
-    setUser = (user) => {
-        this.setState({ user });
-    }
-
-    render() {
-        const { page, user } = this.state;
-        return (
-            <div>
-                {user ?
-                    <Main page={page}
-                        setPage={this.setPage}
-                        setAuthToken={this.setAuthToken}
-                        user={user}
-                        setUser={this.setUser} />
-                    :
-                    <Auth page={page}
-                        setPage={this.setPage}
-                        setAuthToken={this.setAuthToken}
-                        setUser={this.setUser} />
-                }
-            </div>
-        );
-    }
+class Footer extends Component {
+  render() {
+    return (
+      <footer>
+        <p>&copy;  2021 INFO 441</p>
+      </footer >
+    )
+  }
 }
 
 export default App;
