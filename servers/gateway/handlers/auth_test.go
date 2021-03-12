@@ -13,24 +13,24 @@ import (
 
 	"github.com/assignments-fixed-ssunni12/servers/gateway/models/users"
 	"github.com/assignments-fixed-ssunni12/servers/gateway/sessions"
-	// "github.com/go-redis/redis"
+	"github.com/go-redis/redis"
 )
 
 func TestContext(t *testing.T) {
 	//Fail
-	// var first *redis.Client
-	second := sessions.NewMemStore(time.Hour, time.Hour) //sessions.NewRedisStore(first, time.Second) 
-	third :=  &users.MyMockStore{} // &users.MySQLStore{} 
+	var first *redis.Client
+	second := sessions.NewRedisStore(first, time.Second) //sessions.NewMemStore(time.Hour, time.Hour)
+	third := &users.MySQLStore{}                         // &users.MyMockStore{}
 	context := NewContext("", second, third)
 	if context != nil {
 		t.Error("Expected Context constructor to fail but it didn't return nil")
 	}
 
 	//Success
-	// a := redis.NewClient(&redis.Options{
-	// 	Addr: "172.17.0.2:6379",
-	// })
-	b := sessions.NewMemStore(time.Hour, time.Hour) //sessions.NewRedisStore(a, time.Second) 
+	a := redis.NewClient(&redis.Options{
+		Addr: "172.17.0.2:6379",
+	})
+	b := sessions.NewRedisStore(a, time.Second) //sessions.NewMemStore(time.Hour, time.Hour)
 	contextSuccess := NewContext("test", b, third)
 	if contextSuccess == nil {
 		t.Error("Expected Context constructor to work but it didn't")
@@ -42,14 +42,14 @@ func TestContextPOSTUserHandler(t *testing.T) {
 	if len(redisAddr) == 0 {
 		redisAddr = "172.17.0.2:6379"
 	}
-	// client := redis.NewClient(&redis.Options{
-	// 	Addr: redisAddr,
-	// })
+	client := redis.NewClient(&redis.Options{
+		Addr: redisAddr,
+	})
 
 	context := &Context{
 		Key:           "testkey",
-		SessionsStore: sessions.NewMemStore(time.Hour, time.Hour), //sessions.NewRedisStore(client, time.Hour), ,
-		UsersStore: users.NewMockUserDB(), //&users.MySQLStore{},           
+		SessionsStore: sessions.NewRedisStore(client, time.Hour), //sessions.NewMemStore(time.Hour, time.Hour),
+		UsersStore:    &users.MySQLStore{},                       //users.NewMockUserDB(),
 	}
 	newUserValid := users.NewUser{
 		Email:        "test@example.com",
@@ -194,17 +194,16 @@ func TestContextPOSTUserHandler(t *testing.T) {
 func TestContext_GETSpecificUserHandler(t *testing.T) {
 	redisAddr := os.Getenv("REDISADDR")
 	if len(redisAddr) == 0 {
-		redisAddr = "redisServer:6379"
+		redisAddr = "172.17.0.2:6379"
 	}
-
-	// client := redis.NewClient(&redis.Options{
-	// 	Addr: redisAddr,
-	// })
+	client := redis.NewClient(&redis.Options{
+		Addr: redisAddr,
+	})
 
 	context := &Context{
 		Key:           "testkey",
-		SessionsStore: sessions.NewMemStore(time.Hour, time.Hour), //sessions.NewRedisStore(client, time.Hour), ,
-		UsersStore: users.NewMockUserDB(), //&users.MySQLStore{},           
+		SessionsStore: sessions.NewRedisStore(client, time.Hour), //sessions.NewMemStore(time.Hour, time.Hour),
+		UsersStore:    &users.MySQLStore{},                       //users.NewMockUserDB(),
 	}
 
 	newUserValid := users.NewUser{
@@ -352,16 +351,16 @@ func TestContext_GETSpecificUserHandler(t *testing.T) {
 func TestContext_PATCHSpecificUserHandler(t *testing.T) {
 	redisAddr := os.Getenv("REDISADDR")
 	if len(redisAddr) == 0 {
-		redisAddr = "redisServer:6379"
+		redisAddr = "172.17.0.2:6379"
 	}
-	// client := redis.NewClient(&redis.Options{
-	// 	Addr: redisAddr,
-	// })
+	client := redis.NewClient(&redis.Options{
+		Addr: redisAddr,
+	})
 
 	context := &Context{
 		Key:           "testkey",
-		SessionsStore: sessions.NewMemStore(time.Hour, time.Hour), //sessions.NewRedisStore(client, time.Hour), ,
-		UsersStore: users.NewMockUserDB(), //&users.MySQLStore{},           
+		SessionsStore: sessions.NewRedisStore(client, time.Hour), //sessions.NewMemStore(time.Hour, time.Hour),
+		UsersStore:    &users.MySQLStore{},                       //users.NewMockUserDB(),
 	}
 	newUserValid := users.NewUser{
 		Email:        "test@example.com",
@@ -411,6 +410,39 @@ func TestContext_PATCHSpecificUserHandler(t *testing.T) {
 		},
 		{
 			"Invalid PATCH Request - Invalid Header",
+			http.MethodPatch,
+			"1",
+			&invalidUpdates,
+			true,
+			http.StatusUnsupportedMediaType,
+			true,
+			"text/plain; charset=utf-8",
+			validUser,
+		},
+		{
+			"Invalid Patch Request - Trying to update another user",
+			http.MethodPatch,
+			"1000",
+			&invalidUpdates,
+			true,
+			http.StatusForbidden,
+			true,
+			"text/plain; charset=utf-8",
+			validUser,
+		},
+		{
+			"Invalid Patch Request - No ID given",
+			http.MethodPatch,
+			"",
+			&invalidUpdates,
+			true,
+			http.StatusNotFound,
+			true,
+			"text/plain; charset=utf-8",
+			validUser,
+		},
+		{
+			"Invalid Patch Request - Invalid header",
 			http.MethodPatch,
 			"1",
 			&invalidUpdates,
@@ -474,16 +506,16 @@ func TestContext_PATCHSpecificUserHandler(t *testing.T) {
 func TestContext_SessionsHandler(t *testing.T) {
 	redisAddr := os.Getenv("REDISADDR")
 	if len(redisAddr) == 0 {
-		redisAddr = "redisServer:6379"
+		redisAddr = "172.17.0.2:6379"
 	}
-	// client := redis.NewClient(&redis.Options{
-	// 	Addr: redisAddr,
-	// })
+	client := redis.NewClient(&redis.Options{
+		Addr: redisAddr,
+	})
 
 	context := &Context{
 		Key:           "testkey",
-		SessionsStore: sessions.NewMemStore(time.Hour, time.Hour), //sessions.NewRedisStore(client, time.Hour), ,
-		UsersStore: users.NewMockUserDB(), //&users.MySQLStore{},           
+		SessionsStore: sessions.NewRedisStore(client, time.Hour), //sessions.NewMemStore(time.Hour, time.Hour),
+		UsersStore:    &users.MySQLStore{},                       //users.NewMockUserDB(),
 	}
 	validCredentials := users.Credentials{
 		Email:    "test@example.com",
@@ -633,16 +665,16 @@ func TestContext_SessionsHandler(t *testing.T) {
 func TestContext_DELETESpecificSessionHandler(t *testing.T) {
 	redisAddr := os.Getenv("REDISADDR")
 	if len(redisAddr) == 0 {
-		redisAddr = "redisServer:6379"
+		redisAddr = "172.17.0.2:6379"
 	}
-	// client := redis.NewClient(&redis.Options{
-	// 	Addr: redisAddr,
-	// })
+	client := redis.NewClient(&redis.Options{
+		Addr: redisAddr,
+	})
 
 	context := &Context{
 		Key:           "testkey",
-		SessionsStore: sessions.NewMemStore(time.Hour, time.Hour), //sessions.NewRedisStore(client, time.Hour), ,
-		UsersStore: users.NewMockUserDB(), //&users.MySQLStore{},           
+		SessionsStore: sessions.NewRedisStore(client, time.Hour), //sessions.NewMemStore(time.Hour, time.Hour),
+		UsersStore:    &users.MySQLStore{},                       //users.NewMockUserDB(),
 	}
 	validNewUser := users.NewUser{
 		Email:        "test@example.com",

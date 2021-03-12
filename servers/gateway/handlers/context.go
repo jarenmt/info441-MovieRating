@@ -13,11 +13,11 @@ import (
 //and the user store
 type Context struct {
 	Key           string
-	SessionsStore /* *sessions.RedisStore */ *sessions.MemStore
-	UsersStore   *users.MyMockStore
+	SessionsStore *sessions.RedisStore /* *sessions.MemStore */
+	UsersStore    *users.MySQLStore    /* *users.MyMockStore   */
 }
 
-func NewContext(key string, session  *sessions.MemStore /**sessions.RedisStore*/, user  *users.MyMockStore /* *users.MySQLStore */) *Context {
+func NewContext(key string, session *sessions.RedisStore /* *sessions.MemStore */, user *users.MySQLStore /* *users.MyMockStore  */) *Context {
 	if session == nil || user == nil || key == "" {
 		return nil
 	}

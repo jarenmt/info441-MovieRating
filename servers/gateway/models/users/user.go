@@ -145,7 +145,9 @@ func (u *User) Authenticate(password string) error {
 //ApplyUpdates applies the updates to the user. An error
 //is returned if the updates are invalid
 func (u *User) ApplyUpdates(updates *Updates) error {
-
+	// Sure hope there isn't a catch to this function. I don't think
+	// it said to modify Updates in any way, and if it doesn't change then
+	// this is valid.
 	if updates.FirstName != "" {
 		u.FirstName = updates.FirstName
 	}

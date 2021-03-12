@@ -1,5 +1,3 @@
-#!/bin/bash
 GOOS=linux go build
-docker build -t tilleyjaren/server .
+docker build -t tilleyjaren/tilleyjarenfinalgateway .
 go clean
-

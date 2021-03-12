@@ -93,21 +93,6 @@ func (ms *MySQLStore) Insert(user *User) (*User, error) {
 	return user, nil
 }
 
-func (mss *MySQLStore) InsertSignIn(userID int64, ip string) (int64, error) {
-	insq := "insert into successful_logins(user_id, sign_in_time, login_ip) values (?,now(),?)"
-	res, err := mss.Database.Exec(insq, userID, ip)
-	if err != nil {
-		return int64(0), err
-	}
-
-	//get generated ID from insert
-	id, err := res.LastInsertId()
-	if err != nil {
-		return int64(0), err
-	}
-	return id, nil
-}
-
 //Update applies UserUpdates to the given user ID
 //and returns the newly-updated user
 func (ms *MySQLStore) Update(id int64, updates *Updates) (*User, error) {
@@ -149,4 +134,20 @@ func (ms *MySQLStore) Delete(id int64) error {
 	}
 
 	return nil
+}
+
+//InsertSignIn logs a new successful sign in
+func (mss *MySQLStore) InsertSignIn(userID int64, ip string) (int64, error) {
+	insq := "insert into successful_logins(user_id, sign_in_time, login_ip) values (?,now(),?)"
+	res, err := mss.Database.Exec(insq, userID, ip)
+	if err != nil {
+		return int64(0), err
+	}
+
+	//get generated ID from insert
+	id, err := res.LastInsertId()
+	if err != nil {
+		return int64(0), err
+	}
+	return id, nil
 }

@@ -1,1 +1,2 @@
-sudo docker build -t ssunni12/ssunni12sql .
+docker build -t tilleyjaren/tilleyjarensql .
+docker push tilleyjaren/tilleyjarensql

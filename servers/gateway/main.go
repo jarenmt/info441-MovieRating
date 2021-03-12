@@ -11,7 +11,7 @@ import (
 	"github.com/assignments-fixed-ssunni12/servers/gateway/handlers"
 	"github.com/assignments-fixed-ssunni12/servers/gateway/models/users"
 	"github.com/assignments-fixed-ssunni12/servers/gateway/sessions"
-	// "github.com/go-redis/redis"
+	"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -68,21 +68,15 @@ func main() {
 	}
 	defer db.Close()
 
-	// usersStore, err := users.NewMySQLStore(dsn)
-	// if err != nil {
-	// 	fmt.Printf("Error opening database: %v", err)
-	// 	os.Exit(1)
-	// }
-	usersStore := users.NewMockUserDB()
-	// if err != nil {
-	// 	fmt.Printf("Error opening database: %v", err)
-	// 	os.Exit(1)
-	// }
-	// redisClient := redis.NewClient(&redis.Options{
-	// 	Addr: redisAddr,
-	// })
-	// sessionStore := sessions.NewRedisStore(redisClient, time.Hour) //sessions.NewMemStore(time.Hour, time.Hour)
-	sessionStore := sessions.NewMemStore(time.Hour, time.Hour) //sessions.NewMemStore(time.Hour, time.Hour)
+	usersStore, err := users.NewMySQLStore(dsn)
+	if err != nil {
+		fmt.Printf("Error opening database: %v", err)
+		os.Exit(1)
+	}
+	redisClient := redis.NewClient(&redis.Options{
+		Addr: redisAddr,
+	})
+	sessionStore := sessions.NewRedisStore(redisClient, time.Hour)
 	context := handlers.NewContext(sessionKey, sessionStore, usersStore)
 
 	mux := http.NewServeMux()

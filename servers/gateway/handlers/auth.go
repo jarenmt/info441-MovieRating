@@ -42,15 +42,14 @@ func (cont *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 			userResponse, err := cont.UsersStore.Insert(u)
 			if err != nil {
 				log.Printf("Insert failed, error was: %v", err.Error())
-				http.Error(w, err.Error(), http.StatusInternalServerError)
+				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
 			if userResponse.ID == 0 {
 				log.Printf("ID not assigned, error was: %v", err.Error())
-				http.Error(w, "Database didn't assign ID to user", http.StatusInternalServerError)
+				http.Error(w, "Database didn't assign ID to user", http.StatusBadRequest)
 				return
 			}
-			// cont.UsersStore.Insert(userResponse) //added this
 			newSessionState := SessionState{time.Now(), *userResponse}
 			_, err = sessions.BeginSession(cont.Key, cont.SessionsStore, newSessionState, w)
 			if err != nil {
@@ -66,8 +65,14 @@ func (cont *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
+			return
+		} else {
+			http.Error(w, "JSON is only supported media type", http.StatusUnsupportedMediaType)
+			return
 		}
-		http.Error(w, "JSON is only supported media type", http.StatusUnsupportedMediaType)
+	} else {
+		http.Error(w, "POST is the only method supported by this handler", http.StatusMethodNotAllowed)
+		return
 	}
 }
 
@@ -168,19 +173,20 @@ func (cont *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Invalid Credentials Provided", http.StatusUnauthorized)
 				return
 			}
-			// _, err = cont.UsersStore.InsertSignIn(providedUser.ID, r.RemoteAddr)
-			// if err != nil {
-			// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-			// 	return
-			// }
+			_, err = cont.UsersStore.InsertSignIn(providedUser.ID, r.RemoteAddr)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 			w.Header().Add("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
+			w.WriteHeader(http.StatusCreated)
 			encoder := json.NewEncoder(w)
 			err = encoder.Encode(providedUser)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
+			return
 		}
 		http.Error(w, "JSON is only supported media type", http.StatusUnsupportedMediaType)
 		return
