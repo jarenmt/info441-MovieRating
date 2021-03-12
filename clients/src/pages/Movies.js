@@ -20,7 +20,7 @@ function Movies() {
                         <p>Director: Frank Ford Coppola</p>
                     </div>
                 </div>
-                <div className="column">  
+                <div className="column">
                     <div className="card">
                         <h3>Pulp Fiction</h3>
                         <img src={"https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY268_CR1,0,182,268_AL_.jpg"} alt="Pulp Fiction Movie Picture" />
