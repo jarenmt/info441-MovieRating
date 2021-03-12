@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import "./App.css";
+import Login from "./pages/Login";
 import Movies from "./pages/Movies";
+import Registration from "./pages/Registration";
 import TV from "./pages/TV";
-
 class App extends Component {
   render() {
     return (
@@ -14,8 +15,8 @@ class App extends Component {
             <Route exact path="/" />
             <Route path="/movies" component={Movies} />
             <Route path="/tv" component={TV} />
-            <Route path="/registration" component={TV} />
-            <Route path="/login" component={TV} />
+            <Route path="/registration" component={Registration} />
+            <Route path="/login" component={Login} />
           </Switch>
         </BrowserRouter>
         <Footer />
