@@ -9,13 +9,13 @@ import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
-    background: `#E5E5E5`,
+    background: '#E5E5E5',
     border: 0,
     borderRadius: 3,
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
     color: "white",
-    height: `auto`,
-    width: `auto`,
+    height: 'auto',
+    width: 'auto',
     padding: "0 30px",
   },
   login: {
