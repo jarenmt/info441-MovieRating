@@ -28,7 +28,7 @@ class Nav extends Component {
   render() {
     return (
       <div class="nav">
-        <Link to="/">Moovie</Link>
+        <Link to="/">Moovio</Link>
         <Link to="/movies">Movies</Link>
         <Link to="/tv">TV Shows</Link>
         <div class="nav-right">

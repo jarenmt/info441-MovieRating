@@ -88,7 +88,7 @@ export function Registration() {
           <div>
             <Share fontSize="large" />
           </div>
-          <h1>Movie Ratings</h1>
+          <h1>Moovio</h1>
         </div>
         <div>
           <h1> Welcome! </h1>

@@ -47,7 +47,7 @@ export function Login() {
           <div>
             <Share fontSize="large" />
           </div>
-          <h1>MovieRatings</h1>
+          <h1>Moovio</h1>
         </div>
         <div>
           <Box className={classes.forms}>
