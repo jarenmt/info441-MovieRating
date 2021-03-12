@@ -4,9 +4,8 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Share } from "@material-ui/icons";
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { register } from "../../../tasks";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,20 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const mapState = (state) => {
-  const userId = { state };
-  return {
-    uid: userId,
-  };
-};
-
-const mapDispatch = (dispatch) => {
-  return {
-    register: (email, password) => dispatch(register(email, password)),
-  };
-};
-
-const Registration = (props) => {
+export function Registration() {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -64,7 +50,6 @@ const Registration = (props) => {
   const [bio, setBio] = useState(null);
   const [hobbies, setHobbies] = useState(null);
   const [position, setPosition] = useState(null);
-  const { userId } = props.uid.state;
 
   var today = new Date();
 
@@ -193,13 +178,13 @@ const Registration = (props) => {
           </Grid>
           <Grid>
             <p>
-              Alread have an account? Sign in <Link to={"/login"}>Here</Link>
+              Alread have an account? Sign in <Link to={"/"}>Here</Link>
             </p>
           </Grid>
         </Grid>
       </Container>
     </Paper>
   );
-};
+}
 
 export default Registration;

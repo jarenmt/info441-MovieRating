@@ -12,11 +12,10 @@ class App extends Component {
         <BrowserRouter>
           <Nav />
           <Switch>
-            <Route exact path="/" />
+            <Route exact path="/" component={Login} />
             <Route path="/movies" component={Movies} />
             <Route path="/tv" component={TV} />
             <Route path="/registration" component={Registration} />
-            <Route path="/login" component={Login} />
           </Switch>
         </BrowserRouter>
         <Footer />

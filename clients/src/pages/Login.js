@@ -4,9 +4,8 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Share } from "@material-ui/icons";
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { login } from "../../../tasks";
 
 const useStyles = makeStyles({
   root: {
@@ -25,7 +24,8 @@ const useStyles = makeStyles({
     padding: "20px",
     textAlign: "center",
     borderRadius: 3,
-    backgroundColor: "#E5E5E5",
+    backgroundColor: "#C1DBD4",
+    marginBottom: "10rem",
     /* Center vertically and horizontally */
   },
   forms: {
@@ -33,21 +33,7 @@ const useStyles = makeStyles({
   },
 });
 
-const mapStateToProps = (state) => {
-  const userId = { state };
-  return {
-    uid: userId,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: (email, password) => dispatch(login(email, password)),
-  };
-};
-
-const Login = (props) => {
-  const { userId } = props.uid.state;
+export function Login() {
   const classes = useStyles();
   const [login, setLogin] = useState(null);
   const [username, setUsername] = useState(null);
@@ -96,9 +82,6 @@ const Login = (props) => {
           {" "}
           <div>
             <p>
-              Forgot your password? Click <span> Here</span>
-            </p>
-            <p>
               Don't have an account? Click{" "}
               <Link to={"/registration"}>Here</Link>
             </p>
@@ -116,6 +99,6 @@ const Login = (props) => {
       </Container>
     </Paper>
   );
-};
+}
 
 export default Login;

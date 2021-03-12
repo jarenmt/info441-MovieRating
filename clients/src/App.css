@@ -6,20 +6,20 @@
 }
 
 .nav a {
-float: left;
-text-align: center;
-padding: 14px 16px;
-text-decoration: none;
-font-size: 17px;
+  float: left;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
 }
 
 .nav a:hover {
-background-color: rgb(59, 59, 59);
-color: white;
+  background-color: rgb(59, 59, 59);
+  color: white;
 }
 
 .nav-right {
-float: right;
+  float: right;
 }
 
 /* FOOTER */
