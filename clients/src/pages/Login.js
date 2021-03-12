@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Share } from "@material-ui/icons";
 import { React, useState } from "react";
-import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { login } from "../../../tasks";
 
@@ -119,4 +118,4 @@ const Login = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

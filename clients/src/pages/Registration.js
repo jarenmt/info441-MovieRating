@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Share } from "@material-ui/icons";
 import { React, useState } from "react";
-import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { register } from "../../../tasks";
 
@@ -203,4 +202,4 @@ const Registration = (props) => {
   );
 };
 
-export default connect(mapState, mapDispatch)(Registration);
+export default Registration;
