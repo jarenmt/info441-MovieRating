@@ -1,2 +1,2 @@
-docker build -t tilleyjaren/tilleyjarensql .
-docker push tilleyjaren/tilleyjarensql
+docker build -t tilleyjaren/tilleyjarensqlfinal .
+docker push tilleyjaren/tilleyjarensqlfinal

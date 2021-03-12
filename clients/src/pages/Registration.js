@@ -57,7 +57,7 @@ const Registration = (props) => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [department, setDepartment] = useState("");
+  const [username, setUsername] = useState("");
   const [team, setTeam] = useState("");
   const [menuYear, setMenuYear] = useState(null);
   const [menuMonth, setMenuMonth] = useState(null);
@@ -158,12 +158,35 @@ const Registration = (props) => {
             </form>
           </Grid>
           <Grid>
+            <h3>UserName:</h3>
+            <form className={classes.root} noValidate autoComplete="off">
+              <TextField
+                label="username"
+                variant="outlined"
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
+              />
+            </form>
+          </Grid>
+          <Grid>
             <Button
               onClick={(e) => {
-                // if (required) {
-                // check all required forms are filled
-                // }
-                history.push("/");
+                history.push("/movies");
+                fetch("https://api.jaren441.me/users/", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    Email: email,
+                    Password: password,
+                    PasswordConf: password,
+                    UserName: username,
+                    FirstName: firstName,
+                    LastName: lastName,
+                  }),
+                });
               }}
             >
               Register

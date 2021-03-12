@@ -108,7 +108,7 @@ const Login = (props) => {
             variant="contained"
             style={{ background: "F39741" }}
             onClick={(e) => {
-              history.push("/");
+              history.push("/movies");
             }}
           >
             Login
